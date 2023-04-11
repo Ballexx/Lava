@@ -1,4 +1,4 @@
-use super::router::Route;
+use super::{router::Route, http::request};
 use std::{net::{TcpListener, TcpStream}, io::{BufReader, BufRead}};
 
 pub struct Server{
@@ -19,7 +19,7 @@ impl Server{
         let buffer = BufReader::new(stream);
 
         for line in buffer.lines(){
-            println!("{}", line.unwrap());
+            request::request_reader(line.unwrap());
         }
     }   
 
