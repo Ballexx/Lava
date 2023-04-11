@@ -18,9 +18,23 @@ impl Server{
     fn handle_connection(stream: TcpStream){
         let buffer = BufReader::new(stream);
 
+        let mut header: String = String::from("");
+
         for line in buffer.lines(){
-            request::request_reader(line.unwrap());
+            let line = line.unwrap();
+
+            println!("{}", line);
+
+            if line == String::from("\r\n"){
+                break;
+            }
+            //Needs fixing here -----------------
+            //error finding EOF resulting in infinite header-loop
+
+            header = header + &line + "\r\n";
         }
+
+        request::read_request(header);
     }   
 
     pub fn listen(&self){
