@@ -1,10 +1,10 @@
 use super::{router::Route, http::request};
-use std::{net::{TcpListener, TcpStream}, io::{BufReader, BufRead, Read}};
+use std::{net::{TcpListener, TcpStream}, io::{Read}};
 
 pub struct Server{
-    pub host: String,
-    pub port: i32,
-    pub mount: Vec<Route>
+    pub host:   String,
+    pub port:   i32,
+    pub mount:  Vec<Route>
 }
 
 impl Server{
