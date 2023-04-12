@@ -1,5 +1,5 @@
 use super::{router::Route, http::request};
-use std::{net::{TcpListener, TcpStream}, io::{BufReader, BufRead}};
+use std::{net::{TcpListener, TcpStream}, io::{BufReader, BufRead, Read}};
 
 pub struct Server{
     pub host: String,
@@ -15,27 +15,30 @@ impl Server{
         return bind;
     }   
 
-    fn handle_connection(stream: TcpStream){
-        let buffer = BufReader::new(stream);
+    fn handle_connection(mut stream: &TcpStream){
+        let mut buffer: Vec<u8> = Vec::new();
+        let mut tempbuffer = [0 as u8; 4096];
 
-        let mut header: String = String::from("");
-
-        for line in buffer.lines(){
-            let line = line.unwrap();
-
-            println!("{}", line);
-
-            if line == String::from("\r\n"){
-                break;
+        loop {
+            match stream.read(&mut tempbuffer) {
+                Ok(_) => {
+                    for byte in tempbuffer{
+                        if byte == 0{
+                            break;
+                        }
+                        buffer.push(byte);
+                    }
+                    break;
+                },
+                Err(_) => {
+                    println!("Error reading connection");
+                }
             }
-            //Needs fixing here -----------------
-            //error finding EOF resulting in infinite header-loop
-
-            header = header + &line + "\r\n";
         }
+        let string_buffer = String::from_utf8_lossy(&buffer);
 
-        request::read_request(header);
-    }   
+        request::read_request(String::from(string_buffer));
+    }       
 
     pub fn listen(&self){
         let socket = self.bind(); 
@@ -43,7 +46,7 @@ impl Server{
         for stream in socket.incoming(){
             match stream {
                 Ok(stream) => {
-                    Server::handle_connection(stream);
+                    Server::handle_connection(&stream);
                 }
                 Err(e) => { println!("{}", e); }
             }
