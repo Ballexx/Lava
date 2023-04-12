@@ -29,10 +29,10 @@ pub fn read_request(request: String) -> Request{
     }
 
     let parsed_request = Request{
-        method: method,
-        route: route,
-        headers: dict_headers,
-        body: body
+        method:   method,
+        route:    route,
+        headers:  dict_headers,
+        body:     body
     };
 
     return parsed_request;
