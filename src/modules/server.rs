@@ -1,4 +1,4 @@
-use super::{router::Route, http::request};
+use super::{router::Route, http::request::{self, Request}};
 use std::{net::{TcpListener, TcpStream}, io::{Read}};
 
 pub struct Server{
@@ -15,7 +15,33 @@ impl Server{
         return bind;
     }   
 
-    fn handle_connection(mut stream: &TcpStream){
+    pub fn listen(&self){
+        let socket = self.bind(); 
+
+        for stream in socket.incoming(){
+            match stream {
+                Ok(stream) => {
+                    let request = Server::read_connection(&stream);
+                    self.handle_connection(request)
+                }
+                Err(e) => { println!("{}", e); }
+            }
+        }
+    }
+
+    fn handle_connection(&self, request: Request){
+        for route in &self.mount{
+            if route.get_path() as &str != &request.route as &str{
+                continue;
+            }
+            else if route.get_method() as &str != &request.method as &str {
+                continue;
+            }
+            route.get_func()();
+        }
+    }
+
+    fn read_connection(mut stream: &TcpStream) -> Request{
         let mut buffer: Vec<u8> = Vec::new();
         let mut tempbuffer = [0 as u8; 4096];
 
@@ -37,19 +63,6 @@ impl Server{
         }
         let string_buffer = String::from_utf8_lossy(&buffer);
 
-        request::read_request(String::from(string_buffer));
-    }       
-
-    pub fn listen(&self){
-        let socket = self.bind(); 
-
-        for stream in socket.incoming(){
-            match stream {
-                Ok(stream) => {
-                    Server::handle_connection(&stream);
-                }
-                Err(e) => { println!("{}", e); }
-            }
-        }
-    }   
+        return request::read_request(String::from(string_buffer));
+    }           
 }
