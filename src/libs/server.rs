@@ -1,10 +1,10 @@
-use super::{router::Route, http::request::{self, Request}};
+use super::{router::Route, http::{request::{self, Request}, response::Response}};
 use std::{net::{TcpListener, TcpStream}, io::{Read}};
 
 pub struct Server{
     pub host:   String,
     pub port:   i32,
-    pub mount:  Vec<Route>
+    pub routes:  Vec<Route>
 }
 
 impl Server{
@@ -15,7 +15,7 @@ impl Server{
         return bind;
     }   
 
-    pub fn listen(&self){
+    pub fn erupt(&self){
         let socket = self.bind(); 
 
         for stream in socket.incoming(){
@@ -30,13 +30,16 @@ impl Server{
     }
 
     fn handle_connection(&self, request: Request){
-        for route in &self.mount{
+        for route in &self.routes{
             if route.get_path() as &str != &request.route as &str{
                 continue;
             }
             else if route.get_method() as &str != &request.method as &str {
                 continue;
             }
+
+            let res = Response{status: 200, body: "test".to_string(), header: "test".to_string()};
+
             route.get_func()();
         }
     }
