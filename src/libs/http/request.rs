@@ -27,13 +27,11 @@ pub fn read_request(request: String) -> Request{
         let (key, val) = headers[i].split_once(": ").unwrap();
         dict_headers.insert(String::from(key), String::from(val));
     }
-
-    let parsed_request = Request{
+    
+    return Request{
         method:   method,
         route:    route,
         headers:  dict_headers,
         body:     body
     };
-
-    return parsed_request;
 }
