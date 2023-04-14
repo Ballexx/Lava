@@ -1,6 +1,6 @@
 pub struct Route{
-    pub func: fn(),
-    pub path: String,
+    pub func:   fn(),
+    pub path:   String,
     pub method: String
 }
 
