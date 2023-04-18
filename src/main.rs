@@ -18,8 +18,7 @@ fn test2(){
 
     let string_headers = response::build_header(headers);
     
-    let res = response::Response{status: 200, body:"".to_string(), header:"".to_string()};
-    res.send();
+    let response = response::Response{status: 200, body:"".to_string(), header:"".to_string()};
 }
 
 fn main(){

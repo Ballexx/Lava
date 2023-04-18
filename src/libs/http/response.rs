@@ -32,6 +32,6 @@ pub fn build_header(headers: HashMap<&str, &str>) -> String{
 
 impl Response{
     pub fn send(&self){
-        println!("n0ne");
+        
     }
 }

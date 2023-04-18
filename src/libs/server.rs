@@ -1,5 +1,5 @@
 use super::{router::Route, http::{request::{self, Request}, response::Response}};
-use std::{net::{TcpListener, TcpStream}, io::{Read, Write}};
+use std::{net::{TcpListener, TcpStream}, io::{Read, Write}, fmt::format};
 
 pub struct Server{
     pub host:   String,
@@ -38,9 +38,22 @@ impl Server{
                 continue;
             }
             route.get_func()();
-            stream.write_all(b"HTTP/1.1 200\r\nsimme: dogs\r\n\r\ncawk");
-            stream.flush();
         }
+    }
+
+    fn write_response(
+        status:     i32, 
+        header:     String, 
+        body:       String, 
+        mut stream: TcpStream
+    ){
+
+        let response_header = format!(
+            "HTTP/1.1 {}\r\n{}\r\n\r\n{}", status, header, body
+        );
+
+        stream.write_all(response_header.as_bytes());
+        stream.flush();
     }
 
     fn read_connection(mut stream: &TcpStream) -> Request{
