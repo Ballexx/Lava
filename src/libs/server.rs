@@ -4,7 +4,7 @@ use std::{net::{TcpListener, TcpStream}, io::{Read}};
 pub struct Server{
     pub host:   String,
     pub port:   i32,
-    pub routes:  Vec<Route>
+    pub routes: Vec<Route>
 }
 
 impl Server{
