@@ -15,7 +15,6 @@ fn test2(){
         ("test", "cool"),
         ("lol", "ok"),
     ]);
-
     let string_headers = response::build_header(headers);
     
     let response = response::Response{status: 200, body:"".to_string(), header:"".to_string()};
