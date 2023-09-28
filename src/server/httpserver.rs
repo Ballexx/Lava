@@ -53,7 +53,20 @@ impl Server{
                 read_connection(&stream)
             );
 
-            let send_res: Response = handle_connection(request, stream, &self.routes);
+            let res: Response = handle_connection(request, &self.routes);
+
+            let response_header: String = format!(
+                "HTTP/1.1 {}\r\n{}\r\n\r\n{}", 
+                res.get_status(), 
+                res.get_header(), 
+                res.get_body()
+            );
+
+            stream.write_all(response_header.as_bytes())
+            .expect("Unable to write response");
+            
+            stream.flush()
+            .expect("Unable to flush output stream");
         }
     }
 }
@@ -83,7 +96,6 @@ fn read_connection(mut stream: &TcpStream) -> String{
 
 fn handle_connection(
     request:    Request, 
-    stream:     TcpStream, 
     routes:     &Vec<Route>
 ) -> Response{
 

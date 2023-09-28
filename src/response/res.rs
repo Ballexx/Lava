@@ -11,4 +11,18 @@ impl Response{
     pub fn get_status(&self) -> i32{
         return self.status;
     }
+
+    pub fn set_body(&mut self, body: String){
+        self.body = body;
+    }
+    pub fn get_body(&self) -> String{
+        return String::from(&self.body);
+    }
+
+    pub fn set_header(&mut self, header: String){
+        self.headers = header;
+    }
+    pub fn get_header(&self) -> String{
+        return String::from(&self.headers);
+    }
 }
