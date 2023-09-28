@@ -1,19 +1,27 @@
+use crate::response::res::Response;
+
 pub struct Route{
-    pub func:      fn(),
-    pub path:      String,
-    pub method:    String
+    pub handler:      fn(Response) -> Response,
+    pub path:      &'static str,
+    pub method:    &'static str
 }
 
 impl Route{
-    pub fn get_func(&self) -> fn(){
-        return self.func;
+    pub fn get_func(&self) 
+    -> fn(Response) 
+    -> Response{
+        return self.handler;
     }
 
-    pub fn get_path(&self) -> &String{
-        return &self.path;
+    pub fn get_path(&self) -> String{
+        let path: String = String::from(self.path);
+        
+        return path;
     }
 
-    pub fn get_method(&self) -> &String{
-        return  &self.method;
+    pub fn get_method(&self) -> String{
+        let method: String = String::from(self.method);
+
+        return method;
     }
 }
