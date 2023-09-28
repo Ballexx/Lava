@@ -111,7 +111,7 @@ fn read_connection(mut stream: &TcpStream) -> String{
 }
 
 fn handle_connection(
-    req:    Request, 
+    req:        Request, 
     routes:     &Vec<Route>
 ) -> Response{
 

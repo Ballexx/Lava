@@ -10,7 +10,9 @@ use server::httpserver::Server;
 
 
 fn test(mut res: Response, req: &Request) -> Response{
-    
+
+    println!("{:?}", req.get_headers().get_key("Connection"));
+
     return res;
 }
 

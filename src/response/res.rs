@@ -21,7 +21,14 @@ impl Response{
     }
 
     pub fn set_body(&mut self, body: String){
-        self.body = body;
+        let max_content_len: usize = 1000000000;
+
+        if body.len() < max_content_len{
+            self.body = body;
+        }
+        else{
+            panic!("Response-body is too large! Max is {}", max_content_len);
+        }
     }
     pub fn get_body(&self) -> String{
         return String::from(&self.body);
