@@ -1,13 +1,7 @@
 use std::collections::HashMap;
 
 use crate::func::hashmapper::hashmapify_headers;
-
-pub struct Request{
-    pub method:     String,
-    pub path:       String,
-    pub body:       String,
-    pub headers:    HashMap<String, String>
-}
+use super::req::Request;
 
 pub fn parse_request_header(header: String) -> Request{
     let body_split: Vec<&str> = header.split("\r\n\r\n").collect();

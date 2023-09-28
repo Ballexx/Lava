@@ -1,14 +1,14 @@
-use crate::response::res::Response;
+use crate::{response::res::Response, request::req::Request};
 
 pub struct Route{
-    pub handler:      fn(Response) -> Response,
+    pub handler:   fn(Response, &Request) -> Response,
     pub path:      &'static str,
     pub method:    &'static str
 }
 
 impl Route{
     pub fn get_func(&self) 
-    -> fn(Response) 
+    -> fn(Response, &Request) 
     -> Response{
         return self.handler;
     }

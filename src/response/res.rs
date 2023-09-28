@@ -1,3 +1,5 @@
+use crate::response::valid_res;
+
 pub struct Response{
     pub status: i32,
     pub body: String,
@@ -6,7 +8,13 @@ pub struct Response{
 
 impl Response{
     pub fn set_status(&mut self, val: i32){
-        self.status = val;
+        
+        if valid_res::is_valid_status(val){
+            self.status = val;
+        }
+        else{
+            panic!("Invalid response status");
+        }
     }
     pub fn get_status(&self) -> i32{
         return self.status;

@@ -11,10 +11,8 @@ use std::{
 };
 
 use crate::{
-    request::req_parse::{
-        parse_request_header,
-        Request
-    },
+    request::req_parse::parse_request_header,
+    request::req::Request,
     server::route::Route,
     response::res::Response
 };
@@ -27,6 +25,16 @@ pub struct Server{
 
 impl Server{
     fn bind(&self) -> TcpListener{
+
+        let (
+            port_min, 
+            port_max
+        ) = (1023, 65535);
+
+        if self.port < port_min || self.port > port_max{
+            panic!("Invalid port");
+        }
+
         let addr: String = format!(
             "{}:{}", self.host, self.port
         );
@@ -47,7 +55,15 @@ impl Server{
         let listener: TcpListener = self.bind();
         
         loop {
-            let mut stream: TcpStream = listener.accept().unwrap().0;
+
+            let mut stream: TcpStream;
+
+            match listener.accept(){
+                Ok(conn) => {
+                    stream = conn.0;
+                }
+                Err(err) => { panic!("{}", err) }
+            };
 
             let request: Request = parse_request_header(
                 read_connection(&stream)
@@ -95,7 +111,7 @@ fn read_connection(mut stream: &TcpStream) -> String{
 }
 
 fn handle_connection(
-    request:    Request, 
+    req:    Request, 
     routes:     &Vec<Route>
 ) -> Response{
 
@@ -106,13 +122,13 @@ fn handle_connection(
     };
 
     for route in routes{
-        if request.path != route.path{
+        if req.path != route.path{
             continue;
         }
-        else if request.method != route.method{
+        else if req.method != route.method{
             continue;
         }
-        res = route.get_func()(res);
+        res = route.get_func()(res, &req);
     }
 
     return res;

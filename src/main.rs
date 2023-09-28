@@ -1,22 +1,24 @@
-use response::res::Response;
-use server::route::Route;
-use server::httpserver::Server;
-
 mod server;
 mod request;
 mod response;
 mod func;
 
-fn test(mut r: Response) -> Response{
+use response::res::Response;
+use request::req::Request;
+use server::route::Route;
+use server::httpserver::Server;
+
+
+fn test(mut res: Response, req: &Request) -> Response{
     
-    return r;
+    return res;
 }
 
-fn test2(mut r: Response) -> Response{
+fn test2(mut res: Response, req: &Request) -> Response{
 
-    r.set_status(404);
+    res.set_status(404);
     
-    return r;
+    return res;
 }
 
 fn main(){
