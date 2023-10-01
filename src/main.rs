@@ -6,12 +6,12 @@ mod func;
 use response::res::Response;
 use request::req::{Request, handle_header};
 use server::route::Route;
-use server::httpserver::Server;
+use server::server::Server;
 
 
 fn test(mut res: Response, req: &Request) -> Response{
 
-    res.send_html("test.html");
+    res.send_file("test.html");
     return res;
 }
 

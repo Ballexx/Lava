@@ -11,11 +11,13 @@ use std::{
 };
 
 use crate::{
-    request::req_parse::parse_request_header,
-    request::req::Request,
+    request::parse::parse_request_header,
+    request::req::{Request, self},
     server::route::Route,
     response::res::Response
 };
+
+use super::servefile::send_static_file;
 
 pub struct Server{
     pub host:      &'static str,
@@ -68,8 +70,19 @@ impl Server{
                 read_connection(&stream)
             );
 
-            let res: Response = handle_connection(request, &self.routes);
+            let mut res: Response = Response { 
+                status: (200), 
+                body: (String::from("")), 
+                headers: (String::from("")) 
+            };
 
+            if request.path.ends_with(".css") || request.path.ends_with(".js"){
+                res = send_static_file(request.path);
+            }
+            else{ 
+                res = handle_connection(request, &self.routes);
+            }
+        
             let response_header: String = format!(
                 "HTTP/1.1 {}\r\n{}\r\n\r\n{}", 
                 res.get_status(), 
@@ -93,7 +106,7 @@ fn read_connection(mut stream: &TcpStream) -> String{
     let mut data: Vec<u8> = vec![];
 
     loop{
-        
+
         let bytes_read: usize = stream.read(&mut buffer).unwrap();
 
         data.extend_from_slice(&buffer[..bytes_read]);
@@ -133,3 +146,5 @@ fn handle_connection(
 
     return res;
 }
+
+

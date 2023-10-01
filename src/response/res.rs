@@ -1,8 +1,6 @@
 use crate::response::valid_res;
 use core::panic;
 use std::fs;
-use std::env;
-use std::path::PathBuf;
 
 pub struct Response{
     pub status:     i32,
@@ -35,7 +33,7 @@ impl Response{
         }
     }
     
-    pub fn send_html(&mut self, path: &str){
+    pub fn send_file(&mut self, path: &str){
         let max_content_len: usize = 1000000000;
 
         let file_content = fs::read_to_string(path);
@@ -62,7 +60,7 @@ impl Response{
     pub fn set_header(&mut self, header: String){
         self.headers = header;
     }
-    
+
     pub fn get_header(&self) -> String{
         return String::from(&self.headers);
     }
