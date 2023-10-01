@@ -55,7 +55,6 @@ impl Server{
         let listener: TcpListener = self.bind();
         
         loop {
-
             let mut stream: TcpStream;
 
             match listener.accept(){
@@ -94,6 +93,7 @@ fn read_connection(mut stream: &TcpStream) -> String{
     let mut data: Vec<u8> = vec![];
 
     loop{
+        
         let bytes_read: usize = stream.read(&mut buffer).unwrap();
 
         data.extend_from_slice(&buffer[..bytes_read]);

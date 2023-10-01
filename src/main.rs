@@ -4,22 +4,25 @@ mod response;
 mod func;
 
 use response::res::Response;
-use request::req::Request;
+use request::req::{Request, handle_header};
 use server::route::Route;
 use server::httpserver::Server;
 
 
 fn test(mut res: Response, req: &Request) -> Response{
 
-    println!("{:?}", req.get_headers().get_key("Connection"));
-
+    res.send_html("test.html");
     return res;
 }
 
 fn test2(mut res: Response, req: &Request) -> Response{
 
     res.set_status(404);
+    res.send_body(String::from("<h1 style='color: red;'>I hate dog</h1><ul><li>kuk</li><li>dsadsa</li></ul>"));
     
+    let key = req.get_header().key_exist("dsdsad");
+    println!("{}", key);
+
     return res;
 }
 
