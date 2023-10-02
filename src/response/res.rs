@@ -96,7 +96,9 @@ impl Response{
     }
     
     pub fn append_string_header(&mut self, header: String){
-        self.headers.push_str(&header);
+        self.headers.push_str(
+            &self.get_header_len(&header)
+        );
     }
 
     pub fn get_header(&self) -> String{
