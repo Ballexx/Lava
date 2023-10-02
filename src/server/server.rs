@@ -82,7 +82,7 @@ impl Server{
             else{ 
                 res = handle_connection(request, &self.routes);
             }
-        
+
             let response_header: String = format!(
                 "HTTP/1.1 {}\r\n{}\r\n\r\n{}", 
                 res.get_status(), 
@@ -90,11 +90,15 @@ impl Server{
                 res.get_body()
             );
 
-            stream.write_all(response_header.as_bytes())
-            .expect("Unable to write response");
-            
-            stream.flush()
-            .expect("Unable to flush output stream");
+            match stream.write_all(response_header.as_bytes()){
+                Ok(_) => {}
+                Err(err) => { panic!("{}", err) }
+            }
+
+            match stream.flush(){
+                Ok(_) => {}
+                Err(err) => { panic!("{}", err) }
+            }
         }
     }
 }

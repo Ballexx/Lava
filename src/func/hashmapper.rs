@@ -12,11 +12,13 @@ pub fn hashmapify_headers(headers: Vec<&str>) -> HashMap<String, String>{
     return hashmapped_headers;
 }
 
-pub fn stringify_hashmapped_headers(headers: HashMap<&str, &str>) -> String{
+pub fn stringify_hashmapped_headers(headers: &HashMap<&str, &str>) -> String{
 
     let mut string_header: String = String::from("");
 
-    for (key, value) in headers{
+    let owned_header: HashMap<&str, &str> = headers.clone();
+
+    for (key, value) in owned_header{
         
         let formated = format!(
             "{}: {}\r\n", 
