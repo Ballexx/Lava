@@ -1,6 +1,6 @@
-use crate::response::valid_res;
+use crate::{response::valid, func::hashmapper::stringify_hashmapped_headers};
 use core::panic;
-use std::fs;
+use std::{fs, collections::HashMap};
 
 pub struct Response{
     pub status:     i32,
@@ -11,7 +11,7 @@ pub struct Response{
 impl Response{
     pub fn set_status(&mut self, status: i32){
         
-        if valid_res::is_valid_status(status){
+        if valid::is_valid_status(status){
             self.status = status;
         }
         else{
@@ -23,6 +23,7 @@ impl Response{
     }
 
     pub fn send_body(&mut self, body: String){
+
         let max_content_len: usize = 1000000000;
 
         if body.len() < max_content_len{
@@ -34,17 +35,20 @@ impl Response{
     }
     
     pub fn send_file(&mut self, path: &str){
+
         let max_content_len: usize = 1000000000;
 
         let file_content = fs::read_to_string(path);
 
         match file_content {
             Ok(_) => {
+
                 let content = file_content.unwrap();
                 
                 if content.len() > max_content_len{
                     panic!("Response-body is too large! Max is {}", max_content_len);
                 }
+
                 self.body = content;
             }
             Err(err) => {
@@ -57,11 +61,29 @@ impl Response{
         return String::from(&self.body);
     }
 
-    pub fn set_header(&mut self, header: String){
+    pub fn set_header(&mut self, headers: HashMap<&str, &str>){
+
+        let stringified_header: String = stringify_hashmapped_headers(headers);
+
+        self.body = stringified_header;
+    }
+    
+    pub fn append_header(&mut self, headers: HashMap<&str, &str>){
+        
+        let stringified_header: String = stringify_hashmapped_headers(headers);
+
+        self.body.push_str(&stringified_header);
+    }
+
+    pub fn set_string_header(&mut self, header: String){
         self.headers = header;
     }
 
     pub fn get_header(&self) -> String{
         return String::from(&self.headers);
+    }
+
+    pub fn redirect(&self){
+
     }
 }

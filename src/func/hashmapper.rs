@@ -11,3 +11,23 @@ pub fn hashmapify_headers(headers: Vec<&str>) -> HashMap<String, String>{
 
     return hashmapped_headers;
 }
+
+pub fn stringify_hashmapped_headers(headers: HashMap<&str, &str>) -> String{
+
+    let mut string_header: String = String::from("");
+
+    for (key, value) in headers{
+        
+        let formated = format!(
+            "{}: {}\r\n", 
+            String::from(key), 
+            String::from(value)
+        );
+
+        string_header.push_str(&formated);
+    }
+
+    string_header.truncate(string_header.len() - 4);
+
+    return string_header;
+}
