@@ -1,10 +1,10 @@
 use std::collections::HashMap;
 
-use lava::response::Response;
-use lava::request::Request;
+use lava_http::response::Response;
+use lava_http::request::Request;
 
-use lava::server::Route;
-use lava::server::Server;
+use lava_http::server::Route;
+use lava_http::server::Server;
 
 
 fn functions(mut res: Response, req: &Request) -> Response{
@@ -30,7 +30,7 @@ fn functions(mut res: Response, req: &Request) -> Response{
 
     res.send_file("test.html");
 
-    res.send_body(String::from("<h1 style='color: red;'>I hate dog</h1><ul><li>kuk</li><li>dsadsa</li></ul>"));
+    res.send_body(String::from("<h1 style='color: red;'>I love dog</h1><ul><li>cool</li><li>dsadsa</li></ul>"));
 
     return res;
 }
@@ -44,7 +44,7 @@ fn test(mut res: Response, req: &Request) -> Response{
 fn test2(mut res: Response, req: &Request) -> Response{
 
     res.set_status(404);
-    res.send_body(String::from("<h1 style='color: red;'>I hate dog</h1><ul><li>kuk</li><li>dsadsa</li></ul>"));
+    res.send_body(String::from("<h1 style='color: red;'>I love dog</h1><ul><li>cool</li><li>dsadsa</li></ul>"));
     
     let mut headers: HashMap<&str, &str> = HashMap::new();
     headers.insert("Test", "Dogs");

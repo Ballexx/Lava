@@ -1,8 +1,17 @@
 [package]
-name = "lava"
+name = "lava-http"
+authors = ["Ballexx"]
+description = "A lightweight web framework for Rust."
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+
+[profile.dev]
+opt.level = 0
+
+[profile.release]
+opt.level = 3
