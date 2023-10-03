@@ -12,12 +12,12 @@ use std::{
 
 use crate::{
     request::parse::parse_request_header,
-    request::req::{Request, self},
+    request::req::Request,
     server::route::Route,
     response::res::Response
 };
 
-use super::servefile::send_static_file;
+use crate::server::servefile::send_static_file;
 
 pub struct Server{
     pub host:      &'static str,

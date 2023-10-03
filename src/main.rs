@@ -1,14 +1,10 @@
-mod server;
-mod request;
-mod response;
-mod func;
-
 use std::collections::HashMap;
 
-use response::res::Response;
-use request::req::{Request, handle_header};
-use server::route::Route;
-use server::server::Server;
+use lava::response::Response;
+use lava::request::Request;
+
+use lava::server::Route;
+use lava::server::Server;
 
 
 fn functions(mut res: Response, req: &Request) -> Response{
