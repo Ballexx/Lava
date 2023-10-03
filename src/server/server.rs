@@ -53,6 +53,16 @@ impl Server{
         return bind;
     }
 
+    /// Listens to server on given host and port
+    /// 
+    /// Example
+    /// ```
+    /// let server: Server = Server{
+    ///     host: "127.0.0.1",
+    ///     port: 5000,
+    ///     routes: routes
+    /// };
+    /// ```
     pub fn erupt(&self){
         let listener: TcpListener = self.bind();
         
