@@ -2,7 +2,7 @@
 name = "lava-http"
 authors = ["Ballexx"]
 description = "A lightweight web framework for Rust. https://github.com/Ballexx/Lava"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 license = "MIT"
 
