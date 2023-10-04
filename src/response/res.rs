@@ -92,14 +92,14 @@ impl Response{
         return String::from(&self.body);
     }
 
-    fn get_header_len(&self, content: &str) -> String{
+    fn get_header_len(&self, header: &str) -> String{
         if self.headers.len() > 0 {
 
-            return format!("\r\nLocation: {}", content);
+            return format!("\r\n{}", header);
         }
         else {
 
-            return format!("Location: {}", content);            
+            return String::from(header);           
         }
     }
 
@@ -190,9 +190,20 @@ impl Response{
     pub fn redirect(&mut self, path: &str){
 
         self.headers.push_str(
-            &self.get_header_len(path)
+            &self.get_header_len(&format!("Location: {}", path))
         );
 
         self.set_status(303);
     }
+
+
+    pub fn send_json(&mut self, json: &str){
+        self.headers.push_str(
+            &self.get_header_len("Content-Type: application/json")
+        );
+
+        self.body = String::from(json);
+    }
+
+
 }

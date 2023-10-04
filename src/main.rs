@@ -7,56 +7,16 @@ use lava_http::server::Route;
 use lava_http::server::Server;
 
 
-fn functions(mut res: Response, req: &Request) -> Response{
-
-    req.get_body();
-
-    req.get_method();
-
-    req.get_path();
-
-    req.get_header().get_key("key");
-
-    req.get_header().key_exist("key");
-
-    let mut headers: HashMap<&str, &str> = HashMap::new();
-    headers.insert("Test", "Dogs");
-    headers.insert("dows", "dsdsa");
-    res.set_header(&headers);
-    
-    res.clear_header();
-
-    res.set_status(404);
-
-    res.send_file("test.html");
-
-    res.send_body("test");
-
-    return res;
-}
-
 fn test(mut res: Response, req: &Request) -> Response{
 
-    res.send_file("test.html");
+    res.redirect("/test");
+
     return res;
 }
 
 fn test2(mut res: Response, req: &Request) -> Response{
 
-    res.set_status(404);
-    res.send_body("test");
-    
-    let mut headers: HashMap<&str, &str> = HashMap::new();
-    headers.insert("Test", "Dogs");
-    headers.insert("dows", "dsdsa");
-
-    res.set_header(&headers);
-
-    let mut headers2: HashMap<&str, &str> = HashMap::new();
-    headers2.insert("Tesdsadsat", "Dodsags");
-    headers2.insert("dossws", "dsdssssa");
-
-    res.append_header(&headers2);
+    res.send_json("{\"test\": \"dogs\"}");
 
     return res;
 }
