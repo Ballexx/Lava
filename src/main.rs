@@ -1,5 +1,3 @@
-use std::collections::HashMap;
-
 use lava_http::response::Response;
 use lava_http::request::Request;
 
@@ -16,7 +14,11 @@ fn test(mut res: Response, req: &Request) -> Response{
 
 fn test2(mut res: Response, req: &Request) -> Response{
 
-    res.send_json("{\"test\": \"dogs\"}");
+    res.send_json(
+        "{
+            'test': 'dogs'
+        }"
+    );
 
     return res;
 }

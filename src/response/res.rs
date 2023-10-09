@@ -1,6 +1,15 @@
-use crate::{response::valid, func::hashmapper::stringify_hashmapped_headers};
+use crate::{
+    response::valid, 
+    func::hashmapper::stringify_hashmapped_headers, 
+    func::json
+};
+
 use core::panic;
-use std::{fs, collections::HashMap};
+
+use std::{
+    fs, 
+    collections::HashMap
+};
 
 pub struct Response{
     pub status:     i32,
@@ -198,11 +207,14 @@ impl Response{
 
 
     pub fn send_json(&mut self, json: &str){
+
+        let jsonified_json: String = json::jsonify(json); 
+        
         self.headers.push_str(
             &self.get_header_len("Content-Type: application/json")
         );
 
-        self.body = String::from(json);
+        self.body = jsonified_json;
     }
 
 
